@@ -6,13 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.EStop;
 import frc.robot.commands.GreenLed;
 import frc.robot.commands.RedLed;
 import frc.robot.commands.drive;
+import frc.robot.commands.restart;
 import frc.robot.subsystems.BigRedButton;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Led;
 import frc.robot.subsystems.TankDrive;
+import frc.robot.subsystems.Time;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,10 +33,14 @@ public class RobotContainer {
   private final Led led = new Led();
   private final TankDrive m_TankDrive = new TankDrive();
   private final BigRedButton vex_button = new BigRedButton();
-
+  private final Time m_time = new Time();
+  
+  private final restart timer = new restart(m_time);
   private final RedLed redcommand = new RedLed(led);
   private final GreenLed greencommand = new GreenLed(led);
   private final drive drivecommand = new drive(m_TankDrive);
+  private final EStop stop = new EStop(m_TankDrive);
+  
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -59,12 +67,17 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     
-    new Trigger(vex_button::button).whileTrue(greencommand);
-
+    //new Trigger(vex_button::button).whileTrue(greencommand);
+    new Trigger(vex_button::button).whileFalse(timer);
+    new Trigger(m_time::time).whileTrue(stop);
+    new Trigger(m_time::time).whileTrue(redcommand);
+    new Trigger(m_time::time).whileFalse(greencommand);
   }
+
   private void configureDefaultCommands() {
     led.setDefaultCommand(redcommand);
     m_TankDrive.setDefaultCommand(drivecommand);
+    
   }
 
   /**

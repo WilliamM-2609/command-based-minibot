@@ -4,42 +4,49 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.TankDrive;
+import frc.robot.subsystems.Time;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /** An example command that uses an example subsystem. */
-public class drive extends Command {
+public class restart extends Command {
+  /**
+   *
+   */
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final TankDrive m_tankdrive;
-
+  private final Time m_time;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public drive(TankDrive drive) {
-    this.m_tankdrive = drive;
+  public restart(Time restart) {
+    m_time = restart;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drive);
+    addRequirements(restart);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_time.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tankdrive.periodic();
+    m_time.restart_timer();
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
-  // Returns true when the command should end.
+   //Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

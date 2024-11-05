@@ -11,6 +11,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.EStop;
 
 
 public class TankDrive extends SubsystemBase {
@@ -27,7 +28,10 @@ public class TankDrive extends SubsystemBase {
 
     SendableRegistry.addChild(m_robotDrive, m_leftMotor);
     SendableRegistry.addChild(m_robotDrive, m_rightMotor);
-    m_rightMotor.setInverted(true);
+    m_rightMotor.setInverted(false);
+  }
+  public void e_stop() {
+    m_robotDrive.tankDrive(0, 0);
   }
 
   /**
@@ -50,11 +54,12 @@ public class TankDrive extends SubsystemBase {
   public void periodic() {
     
     // This method will be called once per scheduler run
-    m_robotDrive.tankDrive(.5*(m_driverController.getLeftY()), .5*(-m_driverController.getRightY()));
+    m_robotDrive.tankDrive(.5*(m_driverController.getLeftY()), .5*(m_driverController.getRightY()));
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
 }

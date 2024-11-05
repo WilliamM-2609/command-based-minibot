@@ -4,23 +4,24 @@
 
 package frc.robot.commands;
 
+
 import frc.robot.subsystems.TankDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class drive extends Command {
+public class EStop extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final TankDrive m_tankdrive;
+  private TankDrive m_stop;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public drive(TankDrive drive) {
-    this.m_tankdrive = drive;
+  public EStop(TankDrive e_stop) {
+    this.m_stop = e_stop;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drive);
+    addRequirements(e_stop);
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +31,7 @@ public class drive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tankdrive.periodic();
+    m_stop.e_stop();
   }
 
   // Called once the command ends or is interrupted.
@@ -40,6 +41,7 @@ public class drive extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
+
